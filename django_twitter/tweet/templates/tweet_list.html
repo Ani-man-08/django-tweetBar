@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+TweetBar
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-white mt-4">Hi this is my first tweet</h1>
+
+{% if request.path != '/' %}
+<a class="btn btn-primary mb-4" href="{% url 'tweet_create' %}"> Create a Tweet</a>
+{% endif %}
+
+<div class="container row gap-3">
+  {% for tweet in tweets %}
+  <div class="card" style="width: 18rem;">
+  {% if tweet.image %}
+  <img src="{{ tweet.image.url }}" class="card-img-top" alt="Tweet image">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{tweet.user.username}}</h5>
+    <p class="card-text">{{tweet.text}}</p>
+    {% if request.path != '/' and tweet.user == user %}
+    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+    {% endif%}
+  </div>
+</div>
+  {% endfor %}
+</div>
+
+{% endblock %}
